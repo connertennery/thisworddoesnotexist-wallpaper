@@ -1,7 +1,33 @@
 const fs = require('fs');
-const webshot = require('webshot');
+const webshot = require('webshot-node');
 const sharp = require('sharp');
 const wallpaper = require('wallpaper');
+const cheerio = require('cheerio');
+
+const https = require('https');
+
+https
+	.get('https://www.thisworddoesnotexist.com/', (res) => {
+		//   console.log('statusCode:', res.statusCode);
+		//   console.log('headers:', res.headers);
+		res.setEncoding('utf8');
+		let rawData = '';
+
+		res.on('data', (chonk) => {
+			rawData += chonk;
+		});
+		res.on('end', () => {
+			try {
+				const parsedData = cheerio.load(rawData); //HTML parse
+				console.log(parsedData('.inner').contents());
+			} catch (e) {
+				console.error(e.message);
+			}
+		});
+	})
+	.on('error', (e) => {
+		console.error(e);
+	});
 
 console.log('Grabbing new wallpaper!');
 
@@ -66,7 +92,12 @@ const options = {
 	captureSelector: '.inner',
 };
 
-webshot('https://www.thisworddoesnotexist.com/', 'fakeword.png', options, function (err) {});
+webshot(
+	'https://www.thisworddoesnotexist.com/',
+	'fakeword.png',
+	options,
+	function (err) {}
+);
 
 const watcher = fs.watch('./', (eventType, filename) => {
 	if (filename) {
@@ -95,8 +126,12 @@ const processImage = debounce(function () {
 			const newWidth = config.res.width * (config.ratio / 100);
 			const newHeight = config.res.height * (config.ratio / 100);
 
-			const horizontalExtension = Math.floor((config.res.width - newWidth) / 2);
-			const verticalExtension = Math.floor((config.res.height - newHeight) / 2);
+			const horizontalExtension = Math.floor(
+				(config.res.width - newWidth) / 2
+			);
+			const verticalExtension = Math.floor(
+				(config.res.height - newHeight) / 2
+			);
 			const extendOptions = {
 				top: verticalExtension,
 				bottom: verticalExtension,
