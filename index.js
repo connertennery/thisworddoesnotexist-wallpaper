@@ -3,13 +3,19 @@ const webshot = require('webshot');
 const sharp = require('sharp');
 const wallpaper = require('wallpaper');
 
-const desiredOutputResolution = {
-	width: 2560,
-	height: 1440,
+console.log(process.argv);
+
+const config = {
+	res: {
+		width: 2560,
+		height: 1440,
+	},
+	tintEnabled: true,
+	tintColor: { r: 130, g: 0, b: 190 },
 };
 
 const options = {
-	windowSize: { width: 4000, height: 4000 },
+	windowSize: { width: 800, height: 800 },
 	quality: 100,
 	customCSS: `li:nth-child(2) { 
 		display: none;
@@ -23,7 +29,6 @@ webshot('https://www.thisworddoesnotexist.com/', 'fakeword.png', options, functi
 
 const watcher = fs.watch('./', (eventType, filename) => {
 	if (filename) {
-		console.log(eventType, filename);
 		if (eventType !== 'change' || filename !== 'fakeword.png') return;
 
 		processImage();
@@ -46,19 +51,20 @@ const processImage = debounce(function () {
 	image
 		.metadata()
 		.then((metadata) => {
-			const verticalExtension = Math.floor(desiredOutputResolution.height / 2 - metadata.height / 2);
-			const horizontalExtension = Math.floor(desiredOutputResolution.width / 2 - metadata.width / 2);
+			const verticalExtension = Math.floor(config.res.height / 2 - metadata.height / 2);
+			const horizontalExtension = Math.floor(config.res.width / 2 - metadata.width / 2);
 			const extendOptions = {
 				top: verticalExtension,
 				bottom: verticalExtension,
 				left: horizontalExtension,
 				right: horizontalExtension,
-				background: '#08082d',
+				background: '#08082d', //to keep tint consistent
 			};
 			console.log(extendOptions);
 			return image.extend(extendOptions);
 		})
 		.then((image) => {
+			if (config.tintEnabled) image = image.tint(config.tintColor);
 			image
 				.toFile('fakeword-final.png', { quality: 100 })
 				.then((info) => {
