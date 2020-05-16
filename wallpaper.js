@@ -156,14 +156,17 @@ const wrapText = (context, text, x, y, maxWidth) => {
 };
 
 const createImage = (definition) => {
-	const canvas = createCanvas(config.res.width, config.res.height);
+	const scale = 1;
+	const canvasWidth = config.res.width * scale;
+	const canvasHeight = config.res.height * scale;
+	const canvas = createCanvas(canvasWidth, canvasHeight);
 	const ctx = canvas.getContext('2d');
 
 	ctx.fillStyle = config.colors.background;
-	ctx.fillRect(0, 0, config.res.width, config.res.height);
+	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
 	let leftAlign, leftOffset, verticalAlign, wrapWidth; //I know these are different.
-	verticalAlign = config.res.height / 3;
+	verticalAlign = canvasHeight / 3;
 
 	//! 2 word
 	//#region word
@@ -171,9 +174,9 @@ const createImage = (definition) => {
 	ctx.strokeStyle = config.colors.main;
 	ctx.fillStyle = config.colors.main;
 	let wordMeasure = ctx.measureText(definition.word);
-	leftAlign = Math.floor(config.res.width / 2 - wordMeasure.width * 0.75);
+	leftAlign = Math.floor(canvasWidth / 2 - wordMeasure.width * 0.75);
 	leftOffset = Math.floor(wordMeasure.width * 0.1);
-	wrapWidth = Math.floor(Math.max(wordMeasure.width * 1.5, config.res.width * 0.3));
+	wrapWidth = Math.floor(Math.max(wordMeasure.width * 1.5, canvasWidth * 0.3));
 	ctx.fillText(definition.word, leftAlign - wordMeasure.width * 0.01, verticalAlign);
 	//#endregion
 
@@ -222,14 +225,14 @@ const createImage = (definition) => {
 		ctx.strokeStyle = 'rgba(255,0,0,0.5)';
 		ctx.beginPath();
 
-		ctx.moveTo(config.res.width / 2, 0);
-		ctx.lineTo(config.res.width / 2, config.res.height);
+		ctx.moveTo(canvasWidth / 2, 0);
+		ctx.lineTo(canvasWidth / 2, canvasHeight);
 
-		ctx.moveTo(0, config.res.height / 2);
-		ctx.lineTo(config.res.width, config.res.height / 2);
+		ctx.moveTo(0, canvasHeight / 2);
+		ctx.lineTo(canvasWidth, canvasHeight / 2);
 
 		ctx.moveTo(leftAlign, 0);
-		ctx.lineTo(leftAlign, config.res.height);
+		ctx.lineTo(leftAlign, canvasHeight);
 		ctx.stroke();
 	}
 	//#endregion
@@ -261,11 +264,11 @@ const processImage = debounce(function () {
 			// };
 			return image;
 			// .resize({
-			// 	width: newWidth,
-			// 	height: newHeight,
+			// 	width: config.res.width,
+			// 	height: config.res.height,
 			// 	fit: 'contain',
 			// 	background: '#08082d',
-			// })
+			// });
 			// .extend(extendOptions);
 		})
 		.then((image) => {
