@@ -112,24 +112,6 @@ https
 		console.error(e);
 	});
 
-const watcher = fs.watch('./', (eventType, filename) => {
-	if (filename) {
-		if (eventType !== 'change' || filename !== 'fakeword.png') return;
-
-		processImage();
-	}
-});
-
-const debounce = (func, time) => {
-	let debounceTimer;
-	return function () {
-		const context = this;
-		const args = arguments;
-		clearTimeout(debounceTimer);
-		debounceTimer = setTimeout(() => func.apply(context, args), time);
-	};
-};
-
 //Taken from https://www.html5canvastutorials.com/tutorials/html5-canvas-wrap-text-tutorial/
 const wrapText = (context, text, x, y, maxWidth) => {
 	let lineHeight = Math.floor(context.measureText(text).emHeightAscent * 1.1);
@@ -239,7 +221,7 @@ const createImage = (definition) => {
 	out.on('finish', () => processImage());
 };
 
-const processImage = debounce(function () {
+const processImage = () => {
 	const image = sharp('fakeword.png', { failOnError: false });
 
 	image
@@ -261,9 +243,9 @@ const processImage = debounce(function () {
 				.then((info) => {
 					(async () => {
 						await wallpaper.set('fakeword-final.png');
-						watcher.close();
+						// watcher.close();
 					})();
 				})
 				.catch((err) => console.error(err));
 		});
-}, 100);
+};
