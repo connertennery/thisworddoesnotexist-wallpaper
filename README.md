@@ -1,5 +1,7 @@
 # thisworddoesnotexist-wallpaper
- Sets wallpaper to a new nonexistent word
+ Sets wallpaper to a new nonexistent word.
+
+The code is a mess. ¯\\\_(ツ)\_/¯
  
  ## CLI
  `node wallpaper -res width,height -tint r,g,b -ratio <1-100>`
