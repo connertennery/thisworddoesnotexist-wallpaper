@@ -1,10 +1,9 @@
 const fs = require('fs');
-const webshot = require('webshot-node');
 const sharp = require('sharp');
 const wallpaper = require('wallpaper');
 const cheerio = require('cheerio');
 const https = require('https');
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas } = require('canvas');
 
 const DEBUG_LINES = false;
 
@@ -79,8 +78,6 @@ console.log('Grabbing new wallpaper!');
 
 https
 	.get('https://www.thisworddoesnotexist.com/', (res) => {
-		//   console.log('statusCode:', res.statusCode);
-		//   console.log('headers:', res.headers);
 		res.setEncoding('utf8');
 		let rawData = '';
 
@@ -212,7 +209,6 @@ const createImage = (definition) => {
 
 	//! 5 example
 	//#region example
-	// verticalAlign += definition.syllables.length > 0 ? verticalAlign * 0.11 : verticalAlign * 0.18;
 	verticalAlign += Math.round(verticalAlign * 0.08);
 	ctx.font = `100 italic ${config.font.size.example} ${config.font.family}`;
 	ctx.strokeStyle = config.colors.accent;
@@ -249,19 +245,6 @@ const processImage = debounce(function () {
 	image
 		.metadata()
 		.then((metadata) => {
-			//Legacy
-			// const newWidth = config.res.width * (config.ratio / 100);
-			// const newHeight = config.res.height * (config.ratio / 100);
-
-			// const horizontalExtension = Math.floor((config.res.width - newWidth) / 2);
-			// const verticalExtension = Math.floor((config.res.height - newHeight) / 2);
-			// const extendOptions = {
-			// 	top: verticalExtension,
-			// 	bottom: verticalExtension,
-			// 	left: horizontalExtension,
-			// 	right: horizontalExtension,
-			// 	background: '#08082d', //to keep tint consistent
-			// };
 			return image;
 			// .resize({
 			// 	width: config.res.width,

@@ -24,7 +24,6 @@
     "canvas": "^2.6.1",
     "cheerio": "^1.0.0-rc.3",
     "sharp": "^0.25.2",
-    "wallpaper": "^4.4.1",
-    "webshot-node": "^0.18.2"
+    "wallpaper": "^4.4.1"
   }
 }
