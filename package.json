@@ -1,0 +1,28 @@
+{
+  "name": "thisworddoesnotexist-wallpaper",
+  "version": "0.0.1",
+  "description": "Sets wallpaper to a new nonexistent word",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/connertennery/thisworddoesnotexist-wallpaper.git"
+  },
+  "keywords": [
+    "thisworddoesnotexist",
+    "wallpaper"
+  ],
+  "author": "Conner Tennery",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/connertennery/thisworddoesnotexist-wallpaper/issues"
+  },
+  "homepage": "https://github.com/connertennery/thisworddoesnotexist-wallpaper#readme",
+  "dependencies": {
+    "sharp": "^0.25.2",
+    "wallpaper": "^4.4.1",
+    "webshot": "^0.18.0"
+  }
+}
